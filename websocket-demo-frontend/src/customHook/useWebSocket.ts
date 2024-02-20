@@ -10,13 +10,16 @@ function useWebSocket(){
     const dispatch = useAppDispatch()
     const webSocket = useAppSelector(selectWebSocket)
 
-    function connect(username : string){
+    function connect(username : string){//connectจะรับusernameเข้ามา
         try {
-            const socket: WebSocket = new SockJS(`http://localhost:8080/ws`);
+            const socket: WebSocket = new SockJS(`http://localhost:8080/ws`);//เปิดช่อง
             const stompClient: Stomp.Client = Stomp.over(socket);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            stompClient.connect({}, () =>onConnected(stompClient,username), onError);
+            stompClient.connect(
+                {},
+                () =>onConnected(stompClient,username), //connectผ่าน
+                onError);//connectไม่ผ่าน
         } catch (e) {
             console.log(e);
         }
@@ -47,7 +50,7 @@ function useWebSocket(){
 }
 
 export default useWebSocket;
-
+//stompClientเป็ฯเหมือนตัวกลางที่เอาไว้ใช้พูดคุย
 const onError = (err: Stomp.Message) => {
     console.log(err);
 }
